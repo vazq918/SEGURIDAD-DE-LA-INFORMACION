@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cifrado AES</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        textarea, input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px 0;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+</head>
+<body>
+
+    <h1>Cifrado AES</h1>
+    <label for="inputText">Texto a cifrar/descifrar:</label>
+    <textarea id="inputText" rows="4"></textarea>
+
+    <label for="key">Clave:</label>
+    <input type="text" id="key" />
+
+    <button onclick="encryptText()">Cifrar</button>
+    <button onclick="decryptText()">Descifrar</button>
+
+    <h2>Resultado:</h2>
+    <textarea id="outputText" rows="4" readonly></textarea>
+
+    <script>
+        function encryptText() {
+            let inputText = document.getElementById('inputText').value;
+            let key = document.getElementById('key').value;
+            if (!key) {
+                alert('Por favor, ingresa una clave.');
+                return;
+            }
+            let encrypted = CryptoJS.AES.encrypt(inputText, key).toString();
+            document.getElementById('outputText').value = encrypted;
+        }
+
+        function decryptText() {
+            let inputText = document.getElementById('inputText').value;
+            let key = document.getElementById('key').value;
+            if (!key) {
+                alert('Por favor, ingresa una clave.');
+                return;
+            }
+            try {
+                let decrypted = CryptoJS.AES.decrypt(inputText, key);
+                let decryptedText = decrypted.toString(CryptoJS.enc.Utf8);
+                if (!decryptedText) {
+                    throw new Error('Clave incorrecta o texto no cifrado.');
+                }
+                document.getElementById('outputText').value = decryptedText;
+            } catch (e) {
+                alert('Clave incorrecta o texto no cifrado.');
+            }
+        }
+    </script>
+
+</body>
+</html>
